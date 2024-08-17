@@ -50,7 +50,12 @@ document.getElementById('connectButton').addEventListener('click', async () => {
 - [CharaChorder Official Website](https://www.charachorder.com)
 - [CharaChorder Serial API Documentation](https://docs.charachorder.com/SerialAPI.html)
 - [CharaChorder Discord Server](https://discord.gg/QZJeZGtznG)
+- [CharaChorder DeviceManager (Source Project)](https://github.com/CharaChorder/DeviceManager/)
 
 ## License
 
 AGPL-3.0 license
+
+## Attribution
+
+This project is based on the [CharaChorder DeviceManager](https://github.com/CharaChorder/DeviceManager/) project. We are grateful to the original authors and contributors for their work.
