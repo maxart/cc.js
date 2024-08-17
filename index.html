@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CharaChorder JS Wrapper</title>
+
+  <link rel="preconnect" href="https://rsms.me/">
+  <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+
+  <style>
+    :root {
+      font-family: Inter, sans-serif;
+      font-feature-settings: 'liga' 1, 'calt' 1; /* fix for Chrome */
+    }
+    @supports (font-variation-settings: normal) {
+      :root { font-family: InterVariable, sans-serif; }
+    }
+    html, body {
+      font-optical-sizing: auto;
+      font-style: normal;
+      font-size: 1.2rem;
+    }
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+    li {
+      padding-bottom: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <button id="connectButton">Connect to Device</button>
+
+  <div id="chordsContainer">
+      <!-- Chords will be rendered here -->
+  </div>
+
+
+  <script src="cc.js"></script>
+  
+  <script>
+  document.getElementById('connectButton').addEventListener('click', async () => {
+    const device = new CharaChorderDevice();
+    const chordsContainer = document.getElementById('chordsContainer');
+
+    try {
+      await device.connect();
+      console.log("Connected to device");
+
+      const os = await device.getOperatingSystem();
+      console.log("Operating System:", os);
+
+      const keymap = await device.getKeymap();
+      console.log("Keymap:", keymap);
+
+      const chords = await device.listChords();
+      console.log("Chords:", chords);
+
+      chordsContainer.innerHTML = '';
+
+      const ul = document.createElement('ul');
+
+      // Render each chord as a <ruby> element
+      chords.forEach(chordObj => {
+        const li = document.createElement('li');
+        const ruby = document.createElement('ruby');
+        const rt = document.createElement('rt');
+
+        // Set the text content for the phrase and chord
+        ruby.textContent = chordObj.phrase;
+        rt.textContent = chordObj.chord;
+
+        ruby.appendChild(rt);
+        li.appendChild(ruby);
+        ul.appendChild(li);
+      });
+
+      chordsContainer.appendChild(ul);
+
+    } catch (error) {
+      console.error("Error:", error);
+    } finally {
+      await device.disconnect();
+      console.log("Disconnected from device");
+    }
+  });
+  </script>
+</body>
+</html>
